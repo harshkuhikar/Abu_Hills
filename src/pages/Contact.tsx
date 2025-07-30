@@ -13,22 +13,26 @@ import {
   FileText,
   Download,
 } from "lucide-react";
+import emailjs from "emailjs-com";
 
 const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Add this type definition here
+  type ContactFormData = {
+    fullName: string;
+    phone: string;
+    email: string;
+    message: string;
+  };
+
+  // Update useForm to use the type
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
-
-  const onSubmit = (data: any) => {
-    console.log("Form submitted:", data);
-    setIsSubmitted(true);
-    reset();
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
+  } = useForm<ContactFormData>();
 
   const contactInfo = [
     {
@@ -56,6 +60,34 @@ const Contact = () => {
       color: "bg-purple-100 text-purple-600",
     },
   ];
+
+  const onSubmit = (data: ContactFormData) => {
+    emailjs
+      .send(
+        "service_3qn78uc", // replace with your EmailJS service ID
+        "template_29m9mej", // replace with your EmailJS template ID
+        {
+          fullName: data.fullName,
+          phone: data.phone,
+          email: data.email,
+          message: data.message,
+        },
+        "oECqIndkqg04KWxYO" // replace with your EmailJS user ID
+      )
+      .then(
+        (result) => {
+          setIsSubmitted(true);
+          reset();
+          console.log(result);
+
+          setTimeout(() => setIsSubmitted(false), 3000);
+        },
+        (error) => {
+          console.log(error);
+          alert("Failed to send message. Please try again.");
+        }
+      );
+  };
 
   return (
     <motion.div
