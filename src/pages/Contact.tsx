@@ -357,7 +357,8 @@ const Contact = () => {
                 </h3>
                 <div className="space-y-3">
                   <a
-                    href="#"
+                    href="./abu-hills.pdf"
+                    download
                     className="flex items-center space-x-3 p-3 bg-stone-50 rounded-lg hover:bg-stone-100 transition-colors duration-200"
                   >
                     <FileText className="h-5 w-5 text-amber-600" />
